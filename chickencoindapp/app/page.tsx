@@ -1,6 +1,6 @@
 "use client";
 import { BrowserProvider } from "ethers";
-import Image from "next/image"; // Importing Image from next/image
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getContract } from "../config";
 
@@ -138,11 +138,10 @@ export default function Home() {
       }}
     >
       <div style={{ position: 'absolute', top: 210, right: 750 }}>
-        {/* Using next/image component instead of img tag */}
         <Image src="https://w7.pngwing.com/pngs/926/827/png-transparent-chicken-rooster-drawing-gamecock-chicken-animals-chicken-galliformes-thumbnail.png" alt="Token Image" width={50} height={50} />
       </div>
       <h1 style={{ color: "red", fontSize: "36px" }}>
-        Cock-a-doodle-doo! It's Time for a{" "}
+        Cock-a-doodle-doo! It&apos;s Time for a{" "}
         <span style={{ color: "yellow" }}>Featherweight Fight</span>
       </h1>
       <div style={{ minHeight: "30vh" }}>
@@ -156,7 +155,6 @@ export default function Home() {
           {walletKey !== "" ? `${walletKey} (Connected)` : "Enter the Coop"}
         </button>
         <button
-          // Call the importToken function on click
           onClick={importToken}
           className="p-3 bg-red-500 text-white rounded"
         >
@@ -238,7 +236,7 @@ export default function Home() {
           marginTop: "20px",
         }}
       >
-        {processingFunds ? ( // Conditional rendering based on processing state
+        {processingFunds ? (
           <label style={{ color: "white", fontSize: "16px" }}>
             Please wait while processing your funds.
             <br />
@@ -254,7 +252,7 @@ export default function Home() {
         )}
       </div>
       <p style={{ color: "white", fontSize: "14px", marginTop: "20px" }}>
-        A Revolutionary Shit Coin That Will Hatch Money For You. It's all a game of CHICKEN at the end of the day.
+        A Revolutionary Shit Coin That Will Hatch Money For You. It&apos;s all a game of CHICKEN at the end of the day.
       </p>
     </main>
   );
