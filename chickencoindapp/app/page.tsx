@@ -1,6 +1,6 @@
 "use client";
 import { BrowserProvider } from "ethers";
-import Image from "next/image";
+import Image from "next/image"; // Importing Image from next/image
 import { useEffect, useState } from "react";
 import { getContract } from "../config";
 
@@ -138,7 +138,8 @@ export default function Home() {
       }}
     >
       <div style={{ position: 'absolute', top: 210, right: 750 }}>
-        <img src="https://w7.pngwing.com/pngs/926/827/png-transparent-chicken-rooster-drawing-gamecock-chicken-animals-chicken-galliformes-thumbnail.png" alt="Token Image" width="50" height="50" />
+        {/* Using next/image component instead of img tag */}
+        <Image src="https://w7.pngwing.com/pngs/926/827/png-transparent-chicken-rooster-drawing-gamecock-chicken-animals-chicken-galliformes-thumbnail.png" alt="Token Image" width={50} height={50} />
       </div>
       <h1 style={{ color: "red", fontSize: "36px" }}>
         Cock-a-doodle-doo! It's Time for a{" "}
