@@ -248,7 +248,7 @@ export default function Home() {
             onClick={withdrawCoin}
             className="p-3 bg-green-500 text-white rounded"
           >
-            Collect Your Winnings (Withdraw Staked Chicken + Rewards)
+            Collect Your Winnings (Withdraw Staked Chickens + Rewards)
           </button>
         )}
       </div>
