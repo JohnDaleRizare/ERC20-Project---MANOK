@@ -35,7 +35,7 @@ export default function Home() {
       setTransactionHash(tx.hash);
     } catch (e: any) {
       const decodedError = contract.interface.parseError(e.data);
-      alert(`Minting failed: ${decodedError?.args}`);
+      alert(`Minting Failed: ${decodedError?.args}`);
     }
   };
 
@@ -63,7 +63,7 @@ export default function Home() {
       setTransactionHash(tx.hash);
     } catch (e: any) {
       const decodedError = contract.interface.parseError(e.data);
-      alert(`Staking failed: ${decodedError?.args}`);
+      alert(`Staking Failed: ${decodedError?.args}`);
     }
   };
 
@@ -91,7 +91,7 @@ export default function Home() {
       setTransactionHash(tx.hash);
     } catch (e: any) {
       const decodedError = contract.interface.parseError(e.data);
-      alert(`Withdrawing failed: ${decodedError?.args}`);
+      alert(`Withdrawal Failed: ${decodedError?.args}`);
     } finally {
       setProcessingFunds(false);
     }
@@ -118,10 +118,10 @@ export default function Home() {
           },
         },
       });
-      console.log("Token added:", wasAdded); // Log the success message
+      console.log("Token Added Successfully:", wasAdded);
     } catch (error) {
       console.error("Error adding token:", error);
-      alert("Failed to add the token. Please try again or check your wallet settings.");
+      alert("Failed to add the token. Please try again.");
     }
   };
 
