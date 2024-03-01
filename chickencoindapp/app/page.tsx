@@ -1,113 +1,260 @@
+"use client";
+import { BrowserProvider } from "ethers";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { getContract } from "../config";
 
 export default function Home() {
+  const [walletKey, setWalletKey] = useState("");
+  const [currentData, setcurrentData] = useState("");
+
+  const [processingFunds, setProcessingFunds] = useState(false);
+
+  const connectWallet = async () => {
+    const { ethereum } = window as any;
+    const accounts = await ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    setWalletKey(accounts[0]);
+  };
+
+  // Manok Minting
+  const [mintingAmount, setMintingAmount] = useState<number>();
+  const [submitted, setSubmitted] = useState(false);
+  const [transactionHash, setTransactionHash] = useState("");
+
+  const mintCoin = async () => {
+    const { ethereum } = window as any;
+    const provider = new BrowserProvider(ethereum);
+    const signer = await provider.getSigner();
+    const contract = getContract(signer);
+    try {
+      const tx = await contract.mint(signer, mintingAmount);
+      await tx.wait();
+      setSubmitted(true);
+      setTransactionHash(tx.hash);
+    } catch (e: any) {
+      const decodedError = contract.interface.parseError(e.data);
+      alert(`Minting failed: ${decodedError?.args}`);
+    }
+  };
+
+  const mintAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    if (!isNaN(Number(inputValue))) {
+      setMintingAmount(Number(inputValue));
+      console.log(inputValue);
+    } else {
+      setMintingAmount(0);
+    }
+  };
+
+  //Hen House Staking
+  const [stakingAmount, setStakingAmount] = useState<number>();
+  const stakeCoin = async () => {
+    const { ethereum } = window as any;
+    const provider = new BrowserProvider(ethereum);
+    const signer = await provider.getSigner();
+    const contract = getContract(signer);
+    try {
+      const tx = await contract.stake(stakingAmount);
+      await tx.wait();
+      setSubmitted(true);
+      setTransactionHash(tx.hash);
+    } catch (e: any) {
+      const decodedError = contract.interface.parseError(e.data);
+      alert(`Staking failed: ${decodedError?.args}`);
+    }
+  };
+
+  const stakeAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    if (!isNaN(Number(inputValue))) {
+      setStakingAmount(Number(inputValue));
+      console.log(inputValue);
+    } else {
+      setStakingAmount(0);
+    }
+  };
+
+  //The Big Coop Withdraw
+  const withdrawCoin = async () => {
+    const { ethereum } = window as any;
+    const provider = new BrowserProvider(ethereum);
+    const signer = await provider.getSigner();
+    const contract = getContract(signer);
+    try {
+      setProcessingFunds(true);
+      const tx = await contract.withdraw();
+      await tx.wait();
+      setSubmitted(true);
+      setTransactionHash(tx.hash);
+    } catch (e: any) {
+      const decodedError = contract.interface.parseError(e.data);
+      alert(`Withdrawing failed: ${decodedError?.args}`);
+    } finally {
+      setProcessingFunds(false);
+    }
+  };
+
+  //Import Token
+  const importToken = async () => {
+    const { ethereum } = window as any;
+    const tokenAddress = "0x13dab8d8F442C4aC5E5E3CDC1F36dFe49627c5df";
+    const tokenSymbol = "MANOK";
+    const tokenDecimal = 18;
+    const tokenImage = "https://w7.pngwing.com/pngs/926/827/png-transparent-chicken-rooster-drawing-gamecock-chicken-animals-chicken-galliformes-thumbnail.png";
+
+    try {
+      const wasAdded = await ethereum.request({
+        method: "wallet_watchAsset",
+        params: {
+          type: "ERC20",
+          options: {
+            address: tokenAddress,
+            symbol: tokenSymbol,
+            decimals: tokenDecimal,
+            image: tokenImage,
+          },
+        },
+      });
+      console.log("Token added:", wasAdded); // Log the success message
+    } catch (error) {
+      console.error("Error adding token:", error);
+      alert("Failed to add the token. Please try again or check your wallet settings.");
+    }
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+    <main
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        background:
+          "linear-gradient(to bottom, rgba(0, 0, 128, 0.8) 0%, rgba(0, 0, 128, 1) 100%)",
+        minHeight: "100vh",
+      }}
+    >
+      <div style={{ position: 'absolute', top: 210, right: 750 }}>
+        <img src="https://w7.pngwing.com/pngs/926/827/png-transparent-chicken-rooster-drawing-gamecock-chicken-animals-chicken-galliformes-thumbnail.png" alt="Token Image" width="50" height="50" />
+      </div>
+      <h1 style={{ color: "red", fontSize: "36px" }}>
+        Cock-a-doodle-doo! It's Time for a{" "}
+        <span style={{ color: "yellow" }}>Featherweight Fight</span>
+      </h1>
+      <div style={{ minHeight: "30vh" }}>
+        <button
+          onClick={() => {
+            connectWallet();
+          }}
+          className="p-3 bg-green-500 text-white rounded"
+          style={{ marginRight: "10px" }}
+        >
+          {walletKey !== "" ? `${walletKey} (Connected)` : "Enter the Coop"}
+        </button>
+        <button
+          // Call the importToken function on click
+          onClick={importToken}
+          className="p-3 bg-red-500 text-white rounded"
+        >
+          Sharpen Your Claws (Add MANOK To Metamask)
+        </button>
       </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "20px",
+        }}
+      >
+        <br />
+        <form>
+          <label style={{ color: "white", fontSize: "18px" }}>
+            {" "}
+            Place Your Bet (Amount to Mint)
+          </label>
+          <br />
+        </form>
+        <input
+          type="number"
+          value={mintingAmount}
+          onChange={(e) => mintAmountChange(e)}
+          style={{ color: "black" }}
         />
+        <button
+          onClick={() => {
+            mintCoin();
+          }}
+          className="p-3 bg-green-500 text-white rounded"
+        >
+          {" "}
+          Mint CHICKEN{" "}
+        </button>
       </div>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+      <br />
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "20px",
+        }}
+      >
+        <form>
+          <label style={{ color: "white", fontSize: "18px" }}>
+            {" "}
+            Train Your Fighters (Amount to Stake)
+          </label>
+          <br />
+        </form>
+        <input
+          type="number"
+          value={stakingAmount}
+          onChange={(e) => stakeAmountChange(e)}
+          style={{ color: "black" }}
+        />
+        <button
+          onClick={stakeCoin}
+          className="p-3 bg-red-500 text-white rounded"
         >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+          {" "}
+          Stake CHICKEN{" "}
+        </button>
       </div>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "20px",
+        }}
+      >
+        {processingFunds ? ( // Conditional rendering based on processing state
+          <label style={{ color: "white", fontSize: "16px" }}>
+            Please wait while processing your funds.
+            <br />
+            ETA: 1 Minute
+          </label>
+        ) : (
+          <button
+            onClick={withdrawCoin}
+            className="p-3 bg-green-500 text-white rounded"
+          >
+            Collect Your Winnings (Withdraw Staked Chicken + Rewards)
+          </button>
+        )}
+      </div>
+      <p style={{ color: "white", fontSize: "14px", marginTop: "20px" }}>
+        A Revolutionary Shit Coin That Will Hatch Money For You. It's all a game of CHICKEN at the end of the day.
+      </p>
     </main>
   );
 }
