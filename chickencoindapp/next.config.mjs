@@ -1,7 +1,7 @@
 
 const nextConfig = {
     images: {
-      domains: ['w7.pngwing.com'],
+      domains: ['t3.ftcdn.net', 'masterbundles.com', 'img.freepik.com'],
     },
   };
   

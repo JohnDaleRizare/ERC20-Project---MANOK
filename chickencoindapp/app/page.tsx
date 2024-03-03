@@ -103,7 +103,7 @@ export default function Home() {
     const tokenAddress = "0x13dab8d8F442C4aC5E5E3CDC1F36dFe49627c5df";
     const tokenSymbol = "MANOK";
     const tokenDecimal = 18;
-    const tokenImage = "https://w7.pngwing.com/pngs/926/827/png-transparent-chicken-rooster-drawing-gamecock-chicken-animals-chicken-galliformes-thumbnail.png";
+    const tokenImage = "https://t3.ftcdn.net/jpg/05/69/02/32/360_F_569023216_r2YOh0ILJSoL4Wsjrv2RqJal61SW20x4.jpg";
 
     try {
       const wasAdded = await ethereum.request({
@@ -137,14 +137,14 @@ export default function Home() {
         minHeight: "100vh",
       }}
     >
-      <div style={{ position: 'absolute', top: 210, right: 750 }}>
-        <Image src="https://w7.pngwing.com/pngs/926/827/png-transparent-chicken-rooster-drawing-gamecock-chicken-animals-chicken-galliformes-thumbnail.png" alt="Token Image" width={50} height={50} />
+      <div style={{ position: 'absolute', top: 130, right: 750 }}>
+        <Image src="https://img.freepik.com/premium-photo/cute-round-thai-chicken-fiery-emblem-our-restaurant_983420-11635.jpg" alt="Token Image" width={50} height={50} />
       </div>
       <h1 style={{ color: "red", fontSize: "36px" }}>
         Cock-a-doodle-doo! It&apos;s Time for a{" "}
         <span style={{ color: "yellow" }}>Featherweight Fight</span>
       </h1>
-      <div style={{ minHeight: "30vh" }}>
+      <div style={{ minHeight: "15vh" }}>
         <button
           onClick={() => {
             connectWallet();
@@ -161,7 +161,14 @@ export default function Home() {
           Sharpen Your Claws (Add MANOK To Metamask)
         </button>
       </div>
-
+      <div style={{ marginBottom: "20px", textAlign: "center" }}>
+        <Image
+          src="https://t3.ftcdn.net/jpg/05/69/02/32/360_F_569023216_r2YOh0ILJSoL4Wsjrv2RqJal61SW20x4.jpg"
+          alt="Jupiter Logo"
+          width={520}
+          height={128}
+        />
+      </div>
       <div
         style={{
           display: "flex",
