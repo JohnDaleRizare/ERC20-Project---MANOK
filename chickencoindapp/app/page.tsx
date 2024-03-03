@@ -170,6 +170,7 @@ export default function Home() {
           value={mintingAmount}
           onChange={(e) => mintAmountChange(e)}
           className="border-2 border-gray-300 p-2 rounded-lg mt-2"
+          style={{ color: "black" }}
         />
         <input
           type="range"
@@ -195,6 +196,7 @@ export default function Home() {
           value={stakingAmount}
           onChange={(e) => stakeAmountChange(e)}
           className="border-2 border-gray-300 p-2 rounded-lg mt-2"
+          style={{ color: "black" }}
         />
         <input
           type="range"
