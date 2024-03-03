@@ -103,7 +103,7 @@ export default function Home() {
     const tokenAddress = "0x13dab8d8F442C4aC5E5E3CDC1F36dFe49627c5df";
     const tokenSymbol = "MANOK";
     const tokenDecimal = 18;
-    const tokenImage = "https://t3.ftcdn.net/jpg/05/69/02/32/360_F_569023216_r2YOh0ILJSoL4Wsjrv2RqJal61SW20x4.jpg";
+    const tokenImage = "https://w7.pngwing.com/pngs/926/827/png-transparent-chicken-rooster-drawing-gamecock-chicken-animals-chicken-galliformes-thumbnail.png";
 
     try {
       const wasAdded = await ethereum.request({
